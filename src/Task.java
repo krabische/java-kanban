@@ -1,16 +1,27 @@
 public class Task {
-    protected int id;
+    private int id;
     protected String taskName;
     protected String description;
-    protected String statusOfTask = "NEW \uD83C\uDD95";
+    protected String statusOfTask = "NEW";
 
     public Task(String taskName, String description) {
         this.taskName = taskName;
         this.description = description;
     }
 
-    public Task() {
+    public Task(int id, String taskName, String description, String statusOfTask) {
+        this.id = id;
+        this.taskName = taskName;
+        this.description = description;
+        this.statusOfTask = statusOfTask;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setStatusOfTask(String statusOfTask) {
@@ -19,8 +30,9 @@ public class Task {
 
     @Override
     public String toString() {
-        return taskName +
+        return "№" + id + " " + taskName +
                 ", описание: " + description +
-                ", статус: " + statusOfTask;
+                ", statusOfTask: " + statusOfTask;
     }
+
 }

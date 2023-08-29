@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         int insert;
         int number;
+        Integer epicId;
 
         Manager manager = new Manager();
         Task task;
@@ -18,11 +20,24 @@ public class Main {
 
         while (true) {
             menu();
+            number = 0;
             insert = scanner.nextInt();
             switch (insert) {
                 case 1:
-                    manager.printHashTask();
-                    manager.printHashEpic();
+                    ArrayList<Task> tasks = manager.getTasksString();
+                    System.out.println("Задачи:");
+                    for (Task tasken : tasks) {
+                        System.out.println(tasken.toString());
+                    }
+                    ArrayList<Epic> epics = manager.getEpicsString();
+                    for (Epic epicen : epics) {
+                        System.out.println(epicen.toString());
+                        System.out.println("    Подзадачи:");
+                        for (Integer subtaskId : epicen.subtaskIds) {
+                            Subtask subtasken = manager.subtasks.get(subtaskId);
+                            System.out.println("    " + subtasken.toString());
+                        }
+                    }
                     break;
                 case 2:
                     System.out.println("Введите задачу");
@@ -37,18 +52,15 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Введите подзадачу:");
-                    subtask = new Subtask("Шурупы", "Купить шурупы");
-                    System.out.println("Введите номер эпика, к которому относится подзадача:");
-                    number = 3;
-                    manager.putSubtask(number, subtask);
-                    subtask = new Subtask("Купить ей домик", "на сайте");
-                    System.out.println("Введите номер эпика, к которому относится подзадача:");
-                    number = 4;
-                    manager.putSubtask(number, subtask);
-                    subtask = new Subtask("Купить ей корм", "на рынке");
-                    System.out.println("Введите номер эпика, к которому относится подзадача:");
-                    number = 4;
-                    manager.putSubtask(number, subtask);
+                    epicId = 3;
+                    subtask = new Subtask("Шурупы", "Купить шурупы", epicId);
+                    manager.putSubtask(subtask);
+                    epicId = 4;
+                    subtask = new Subtask("Купить ей домик", "на сайте", epicId);
+                    manager.putSubtask(subtask);
+                    epicId = 4;
+                    subtask = new Subtask("Купить ей корм", "на рынке", epicId);
+                    manager.putSubtask(subtask);
                     break;
                 case 4:
                     manager.tasks.clear();
@@ -74,16 +86,16 @@ public class Main {
                     number = scanner.nextInt();
                     System.out.print("Введите новую задачу: ");
                     if (manager.tasks.get(number) != null) {
-                        task = new Task("Помыть посуду", "убрать после гостей");
-                        manager.changeTask(number, task);
+                        task = new Task(number, "Помыть посуду", "убрать после гостей", "DONE");
+                        manager.changeTask(task);
                         break;
                     } else if (manager.epics.get(number) != null) {
-                        epic = new Epic("Помыть посуду", "убрать после гостей");
-                        manager.changeEpic(number, epic);
+                        epic = new Epic(number, "Помыть посуду", "убрать после гостей", "DONE");
+                        manager.changeEpic(epic);
                         break;
                     } else if (manager.subtasks.get(number) != null) {
-                        subtask = new Subtask("Помыть посуду", "убрать после гостей");
-                        manager.changeSubtask(number, subtask);
+                        subtask = new Subtask(number, "Помыть посуду", "убрать после гостей", "DONE");
+                        manager.changeSubtask(subtask);
                         break;
                     }
                     System.out.println("Задача обновлена!");
@@ -108,39 +120,51 @@ public class Main {
                     number = scanner.nextInt();
                     System.out.println(manager.subtasks.get(number));
                     break;
-                case 9:
-                    System.out.println("Введите ID задачи:");
+                case 9: {
+                    System.out.println("Введите группу задач, которую вы хотите вывести: " +
+                            "(1) Task, (2) Epic, (3) Subtask");
                     number = scanner.nextInt();
-                    newStatus = "DONE ✅";
-                    if (manager.tasks.get(number) != null) {
-                        manager.changeTaskStatus(number, newStatus);
-                        System.out.println("Статус задачи обновлен!");
-                    } else if (manager.epics.get(number) != null) {
-                        System.out.println("Чтобы обновить статус эпика - закройте остальные задачи!");
-                    } else if (manager.subtasks.get(number) != null) {
-                        manager.changeSubtaskStatus(number, newStatus);
-                        System.out.println("Статус задачи обновлен!");
-                        manager.checkStatus();
+                    switch (number) {
+                        case 1:
+                            ArrayList<Task> tasksList = manager.getAllTasks();
+                            for (Task tasken : tasksList) {
+                                System.out.println(tasken.toString());
+                            }
+                            break;
+                        case 2:
+                            ArrayList<Epic> epicsList = manager.getAllEpics();
+                            for (Epic epicen : epicsList) {
+                                System.out.println(epicen.toString());
+                            }
+
+                            break;
+                        case 3:
+                            ArrayList<Subtask> subtasksList = manager.getAllSubtasks();
+                            for (Subtask subtasken : subtasksList) {
+                                System.out.println(subtasken.toString());
+                            }
                     }
                     break;
+                }
                 case 10:
                     System.out.println("До встречи!");
                     return;
             }
+
+        }
+
+    }
+        static void menu () {
+            System.out.println("Выберите один из пунктов: " +
+                    "1. Посмотреть список задач " +
+                    "2. Добавить задачу " +
+                    "3. Добавить подзадачу " +
+                    "4. Удалить все задачи " +
+                    "5. Найти задачу по ID " +
+                    "6. Обновить задачу " +
+                    "7. Удалить задачу по ID " +
+                    "8. Просмотр подзадач " +
+                    "9. Вывести группу задач " +
+                    "10. Выход ");
         }
     }
-
-    static void menu() {
-        System.out.println("Выберите один из пунктов: " +
-                "1. Посмотреть список задач " +
-                "2. Добавить задачу " +
-                "3. Добавить подзадачу " +
-                "4. Удалить все задачи " +
-                "5. Найти задачу по ID " +
-                "6. Обновить задачу " +
-                "7. Удалить задачу по ID " +
-                "8. Просмотр подзадач " +
-                "9. Отметить задачу оконченой " +
-                "10. Выход ");
-    }
-}
