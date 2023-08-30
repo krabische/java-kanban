@@ -11,7 +11,6 @@ public class Main {
         Task task;
         Epic epic;
         Subtask subtask;
-        String newStatus;
         Scanner scanner = new Scanner(System.in);
 
         //в цикле я оставил автоматический ввод задач, эпиков и подзадач, это очень легко заменить на автосчитывание,
@@ -20,16 +19,15 @@ public class Main {
 
         while (true) {
             menu();
-            number = 0;
             insert = scanner.nextInt();
             switch (insert) {
                 case 1:
-                    ArrayList<Task> tasks = manager.getTasksString();
+                    ArrayList<Task> tasks = manager.getAllTasks();
                     System.out.println("Задачи:");
                     for (Task tasken : tasks) {
                         System.out.println(tasken.toString());
                     }
-                    ArrayList<Epic> epics = manager.getEpicsString();
+                    ArrayList<Epic> epics = manager.getAllEpics();
                     for (Epic epicen : epics) {
                         System.out.println(epicen.toString());
                         System.out.println("    Подзадачи:");
@@ -146,7 +144,35 @@ public class Main {
                     }
                     break;
                 }
-                case 10:
+                case 10: {
+                    System.out.println("Введите группу задач, которую вы хотите удалить: " +
+                            "(1) Task, (2) Epic, (3) Subtask");
+                    number = scanner.nextInt();
+                    switch (number) {
+                        case 1:
+                            manager.removeTasks();
+                            break;
+                        case 2:
+                            manager.removeEpics();
+                            break;
+                        case 3:
+                            manager.removeSubtasks();
+                            break;
+                    }
+                    break;
+                }
+                case 11:
+                    System.out.println("Введите номер эпика: ");
+                    number = scanner.nextInt();
+                    ArrayList<Integer> subtasksList = manager.getEpicsSubtasks(number);
+                    for (Integer subtaskId : subtasksList) {
+                        subtask = manager.subtasks.get(subtaskId);
+                        if (subtask != null) {
+                            System.out.println(subtask.toString());
+                        }
+                    }
+                    break;
+                case 12:
                     System.out.println("До встречи!");
                     return;
             }
@@ -154,17 +180,20 @@ public class Main {
         }
 
     }
-        static void menu () {
-            System.out.println("Выберите один из пунктов: " +
-                    "1. Посмотреть список задач " +
-                    "2. Добавить задачу " +
-                    "3. Добавить подзадачу " +
-                    "4. Удалить все задачи " +
-                    "5. Найти задачу по ID " +
-                    "6. Обновить задачу " +
-                    "7. Удалить задачу по ID " +
-                    "8. Просмотр подзадач " +
-                    "9. Вывести группу задач " +
-                    "10. Выход ");
-        }
+
+    static void menu() {
+        System.out.println("Выберите один из пунктов: " +
+                "1. Посмотреть список задач " +
+                "2. Добавить задачу " +
+                "3. Добавить подзадачу " +
+                "4. Удалить все задачи " +
+                "5. Найти задачу по ID " +
+                "6. Обновить задачу " +
+                "7. Удалить задачу по ID " +
+                "8. Просмотр подзадач " +
+                "9. Вывести группу задач " +
+                "10. Удалить группу задач " +
+                "11. Вывести подзадачи эпика " +
+                "12. Выход ");
     }
+}
