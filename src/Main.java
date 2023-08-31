@@ -164,11 +164,10 @@ public class Main {
                 case 11:
                     System.out.println("Введите номер эпика: ");
                     number = scanner.nextInt();
-                    ArrayList<Integer> subtasksList = manager.getEpicsSubtasks(number);
-                    for (Integer subtaskId : subtasksList) {
-                        subtask = manager.subtasks.get(subtaskId);
-                        if (subtask != null) {
-                            System.out.println(subtask.toString());
+                    ArrayList<Subtask> subtasksList = manager.getAllSubtasks();
+                    for (Subtask subtasken : subtasksList) {
+                        if (subtasken.getEpicId() == number){
+                            System.out.println(subtasken);
                         }
                     }
                     break;

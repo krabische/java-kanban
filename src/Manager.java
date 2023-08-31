@@ -44,7 +44,7 @@ public class Manager {
     public void changeSubtask(Subtask subtask) {
         if (subtasks.containsKey(subtask.getId())) {
             subtasks.put(subtask.getId(), subtask);
-            updateStatus(subtask.epicId);
+            updateStatus(subtask.getEpicId());
         }
     }
 
@@ -64,6 +64,7 @@ public class Manager {
     public void removeSubtasks() {
         for (Epic epic : epics.values()) {
             epic.subtaskIds.clear();
+            epic.statusOfTask = "NEW";
         }
         subtasks.clear();
     }
@@ -84,11 +85,7 @@ public class Manager {
         updateStatus(subtask.epicId);
     }
 
-    public ArrayList<Integer> getEpicsSubtasks(Integer number) {
-        Epic epic = epics.get(number);
-        ArrayList<Integer> subtasks = epic.subtaskIds;
-        return subtasks;
-    }
+
 
     public ArrayList<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
