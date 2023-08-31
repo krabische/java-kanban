@@ -31,7 +31,7 @@ public class Main {
                     for (Epic epicen : epics) {
                         System.out.println(epicen.toString());
                         System.out.println("    Подзадачи:");
-                        for (Integer subtaskId : epicen.subtaskIds) {
+                        for (Integer subtaskId : epicen.getSubtaskIds()) {
                             Subtask subtasken = manager.subtasks.get(subtaskId);
                             System.out.println("    " + subtasken.toString());
                         }

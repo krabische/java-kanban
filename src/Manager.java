@@ -22,11 +22,11 @@ public class Manager {
         subtask.setId(getNumberOfTask());
         subtasks.put(subtask.getId(), subtask);
 
-        Epic epic = epics.get(subtask.epicId);
+        Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
-            epic.subtaskIds.add(subtask.getId());
+            epic.subtaskIdsAdd(subtask.getId());
         }
-        updateStatus(subtask.epicId);
+        updateStatus(subtask.getEpicId());
     }
 
     public void changeEpic(Epic epic) {
@@ -63,7 +63,7 @@ public class Manager {
 
     public void removeSubtasks() {
         for (Epic epic : epics.values()) {
-            epic.subtaskIds.clear();
+            epic.subtaskIdsClear();
             epic.statusOfTask = "NEW";
         }
         subtasks.clear();
@@ -72,7 +72,7 @@ public class Manager {
     public void removeEpic(Integer epicId) {
         Epic epic = epics.get(epicId);
         if (epic != null) {
-            for (Integer subtaskId : epic.subtaskIds) {
+            for (Integer subtaskId : epic.getSubtaskIds()) {
                 subtasks.remove(subtaskId);
             }
             epics.remove(epicId);
@@ -82,7 +82,7 @@ public class Manager {
     public void removeSubtask(Integer taskId) {
         Subtask subtask = subtasks.get(taskId);
         subtasks.remove(taskId);
-        updateStatus(subtask.epicId);
+        updateStatus(subtask.getEpicId());
     }
 
 
@@ -121,7 +121,7 @@ public class Manager {
             boolean containsNew = false;
             boolean containsInProgress = false;
 
-            for (Integer subtaskId : epic.subtaskIds) {
+            for (Integer subtaskId : epic.getSubtaskIds()) {
                 Subtask subtask = subtasks.get(subtaskId);
                 if (subtask != null) {
                     if (subtask.statusOfTask.equals("NEW")) {
