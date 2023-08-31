@@ -99,6 +99,21 @@ public class Manager {
         return new ArrayList<>(subtasks.values());
     }
 
+    public ArrayList<Subtask> getEpicsSubtasks(Integer number) {
+        Epic epic = epics.get(number);
+        ArrayList<Integer> subtaskIds = epic.getSubtaskIds();
+        ArrayList<Subtask> subtasksList = new ArrayList<>();
+
+        for (Integer id : subtaskIds) {
+            Subtask subtask = subtasks.get(id);
+            if (subtask != null) {
+                subtasksList.add(subtask);
+            }
+        }
+        return subtasksList;
+    }
+
+
     private void updateStatus(Integer epicId) {
         Epic epic = epics.get(epicId);
         if (epic != null) {
