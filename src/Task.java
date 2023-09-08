@@ -2,14 +2,14 @@ public class Task {
     private int id;
     protected String taskName;
     protected String description;
-    protected String statusOfTask = "NEW";
+    protected Status statusOfTask = Status.NEW;
 
     public Task(String taskName, String description) {
         this.taskName = taskName;
         this.description = description;
     }
 
-    public Task(int id, String taskName, String description, String statusOfTask) {
+    public Task(int id, String taskName, String description, Status statusOfTask) {
         this.id = id;
         this.taskName = taskName;
         this.description = description;
@@ -24,7 +24,7 @@ public class Task {
         this.id = id;
     }
 
-    public void setStatusOfTask(String statusOfTask) {
+    public void setStatusOfTask(Status statusOfTask) {
         this.statusOfTask = statusOfTask;
     }
 

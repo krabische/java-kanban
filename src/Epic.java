@@ -7,7 +7,7 @@ public class Epic extends Task {
         super(taskName, description);
     }
 
-    public Epic(int id, String taskName, String description, String statusOfTask) {
+    public Epic(int id, String taskName, String description, Status statusOfTask) {
         super(id, taskName, description, statusOfTask);
     }
 
