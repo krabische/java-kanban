@@ -1,3 +1,5 @@
+package AllTasks;
+
 public class Task {
     private int id;
     protected String taskName;
@@ -35,4 +37,7 @@ public class Task {
                 ", statusOfTask: " + statusOfTask;
     }
 
+    public Status getStatusOfTask() {
+        return statusOfTask;
+    }
 }

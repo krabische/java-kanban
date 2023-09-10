@@ -1,3 +1,6 @@
+package AllManagers;
+import AllTasks.*;
+
 import java.util.List;
 
 public interface HistoryManager {

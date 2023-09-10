@@ -1,3 +1,6 @@
+import AllManagers.*;
+import AllTasks.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,23 +15,24 @@ public class Main {
         Epic epic;
         Subtask subtask;
         Scanner scanner = new Scanner(System.in);
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
         while (true) {
             menu();
             insert = scanner.nextInt();
             switch (insert) {
                 case 1:
-                    ArrayList<Task> tasks = Managers.getDefault().getAllTasks();
+                    ArrayList<Task> tasks = inMemoryTaskManager.getAllTasks();
                     System.out.println("Задачи:");
                     for (Task tasken : tasks) {
                         System.out.println(tasken.toString());
                     }
-                    ArrayList<Epic> epics = Managers.getDefault().getAllEpics();
+                    ArrayList<Epic> epics = inMemoryTaskManager.getAllEpics();
                     for (Epic epicen : epics) {
                         System.out.println(epicen.toString());
                         System.out.println("    Подзадачи:");
                         for (Integer subtaskId : epicen.getSubtaskIds()) {
-                            Subtask subtasken = Managers.getDefault().subtasks.get(subtaskId);
+                            Subtask subtasken = inMemoryTaskManager.subtasks.get(subtaskId);
                             System.out.println("    " + subtasken.toString());
                         }
                     }
@@ -36,60 +40,60 @@ public class Main {
                 case 2:
                     System.out.println("Введите задачу");
                     task = new Task("Убраться", "помыть полы");
-                    Managers.getDefault().putTask(task);
+                    inMemoryTaskManager.putTask(task);
                     task = new Task("Погулять", "увидеться с Вовой");
-                    Managers.getDefault().putTask(task);
+                    inMemoryTaskManager.putTask(task);
                     epic = new Epic("Починить телевизор", "сломался экран");
-                    Managers.getDefault().putEpic(epic);
+                    inMemoryTaskManager.putEpic(epic);
                     epic = new Epic("Купить собаку", "найти продавца и договориться о встречи");
-                    Managers.getDefault().putEpic(epic);
+                    inMemoryTaskManager.putEpic(epic);
                     break;
                 case 3:
                     System.out.println("Введите подзадачу:");
                     epicId = 3;
                     subtask = new Subtask("Шурупы", "Купить шурупы", epicId);
-                    Managers.getDefault().putSubtask(subtask);
+                    inMemoryTaskManager.putSubtask(subtask);
                     epicId = 4;
                     subtask = new Subtask("Купить ей домик", "на сайте", epicId);
-                    Managers.getDefault().putSubtask(subtask);
+                    inMemoryTaskManager.putSubtask(subtask);
                     epicId = 4;
                     subtask = new Subtask("Купить ей корм", "на рынке", epicId);
-                    Managers.getDefault().putSubtask(subtask);
+                    inMemoryTaskManager.putSubtask(subtask);
                     break;
                 case 4:
-                    Managers.getDefault().tasks.clear();
-                    Managers.getDefault().epics.clear();
-                    Managers.getDefault().subtasks.clear();
+                    inMemoryTaskManager.tasks.clear();
+                    inMemoryTaskManager.epics.clear();
+                    inMemoryTaskManager.subtasks.clear();
                     System.out.println("Все задачи удалены!");
                     break;
                 case 5:
                     System.out.print("Введите ID задачи: ");
                     insert = scanner.nextInt();
-                    if (insert <= Managers.getDefault().tasks.size()) {
-                        System.out.println(Managers.getDefault().getTask(insert));
+                    if (insert <= inMemoryTaskManager.tasks.size()) {
+                        System.out.println(inMemoryTaskManager.getTask(insert));
                     } else {
-                        System.out.println(Managers.getDefault().getEpic(insert));
+                        System.out.println(inMemoryTaskManager.getEpic(insert));
                     }
-                    if (Managers.getDefault().subtasks.containsKey(insert)) {
+                    if (inMemoryTaskManager.subtasks.containsKey(insert)) {
                         System.out.println("Подзадачи:");
-                        System.out.println(Managers.getDefault().getSubtask(insert));
+                        System.out.println(inMemoryTaskManager.getSubtask(insert));
                     }
                     break;
                 case 6:
                     System.out.print("Введите ID задачи, которую хотите обновить: ");
                     number = scanner.nextInt();
                     System.out.print("Введите новую задачу: ");
-                    if (Managers.getDefault().tasks.get(number) != null) {
+                    if (inMemoryTaskManager.tasks.get(number) != null) {
                         task = new Task(number, "Помыть посуду", "убрать после гостей", Status.DONE);
-                        Managers.getDefault().changeTask(task);
+                        inMemoryTaskManager.changeTask(task);
                         break;
-                    } else if (Managers.getDefault().epics.get(number) != null) {
+                    } else if (inMemoryTaskManager.epics.get(number) != null) {
                         epic = new Epic(number, "Помыть посуду", "убрать после гостей", Status.DONE);
-                        Managers.getDefault().changeEpic(epic);
+                        inMemoryTaskManager.changeEpic(epic);
                         break;
-                    } else if (Managers.getDefault().subtasks.get(number) != null) {
+                    } else if (inMemoryTaskManager.subtasks.get(number) != null) {
                         subtask = new Subtask(number, "Помыть посуду", "убрать после гостей", Status.DONE);
-                        Managers.getDefault().changeSubtask(subtask);
+                        inMemoryTaskManager.changeSubtask(subtask);
                         break;
                     }
                     System.out.println("Задача обновлена!");
@@ -97,14 +101,14 @@ public class Main {
                 case 7:
                     System.out.print("Введите ID задачи, которую хотите удалить: ");
                     number = scanner.nextInt();
-                    if (Managers.getDefault().tasks.get(number) != null) {
-                        Managers.getDefault().removeTask(number);
+                    if (inMemoryTaskManager.tasks.get(number) != null) {
+                        inMemoryTaskManager.removeTask(number);
                         break;
-                    } else if (Managers.getDefault().epics.get(number) != null) {
-                        Managers.getDefault().removeEpic(number);
+                    } else if (inMemoryTaskManager.epics.get(number) != null) {
+                        inMemoryTaskManager.removeEpic(number);
                         break;
-                    } else if (Managers.getDefault().subtasks.get(number) != null) {
-                        Managers.getDefault().removeSubtask(number);
+                    } else if (inMemoryTaskManager.subtasks.get(number) != null) {
+                        inMemoryTaskManager.removeSubtask(number);
                         break;
                     }
                     System.out.println("Задача удалена!");
@@ -112,28 +116,28 @@ public class Main {
                 case 8:
                     System.out.println("Введите номер эпика, у которого хотите просмотреть подзадачи: ");
                     number = scanner.nextInt();
-                    System.out.println(Managers.getDefault().subtasks.get(number));
+                    System.out.println(inMemoryTaskManager.subtasks.get(number));
                     break;
                 case 9: {
                     System.out.println("Введите группу задач, которую вы хотите вывести: " +
-                            "(1) Task, (2) Epic, (3) Subtask");
+                            "(1) AllTasks.Task, (2) AllTasks.Epic, (3) AllTasks.Subtask");
                     number = scanner.nextInt();
                     switch (number) {
                         case 1:
-                            ArrayList<Task> tasksList = Managers.getDefault().getAllTasks();
+                            ArrayList<Task> tasksList = inMemoryTaskManager.getAllTasks();
                             for (Task tasken : tasksList) {
                                 System.out.println(tasken.toString());
                             }
                             break;
                         case 2:
-                            ArrayList<Epic> epicsList = Managers.getDefault().getAllEpics();
+                            ArrayList<Epic> epicsList = inMemoryTaskManager.getAllEpics();
                             for (Epic epicen : epicsList) {
                                 System.out.println(epicen.toString());
                             }
 
                             break;
                         case 3:
-                            ArrayList<Subtask> subtasksList = Managers.getDefault().getAllSubtasks();
+                            ArrayList<Subtask> subtasksList = inMemoryTaskManager.getAllSubtasks();
                             for (Subtask subtasken : subtasksList) {
                                 System.out.println(subtasken.toString());
                             }
@@ -142,17 +146,17 @@ public class Main {
                 }
                 case 10: {
                     System.out.println("Введите группу задач, которую вы хотите удалить: " +
-                            "(1) Task, (2) Epic, (3) Subtask");
+                            "(1) AllTasks.Task, (2) AllTasks.Epic, (3) AllTasks.Subtask");
                     number = scanner.nextInt();
                     switch (number) {
                         case 1:
-                            Managers.getDefault().removeTasks();
+                            inMemoryTaskManager.removeTasks();
                             break;
                         case 2:
-                            Managers.getDefault().removeEpics();
+                            inMemoryTaskManager.removeEpics();
                             break;
                         case 3:
-                            Managers.getDefault().removeSubtasks();
+                            inMemoryTaskManager.removeSubtasks();
                             break;
                     }
                     break;
@@ -160,7 +164,7 @@ public class Main {
                 case 11:
                     System.out.println("Введите номер эпика: ");
                     number = scanner.nextInt();
-                    ArrayList<Subtask> subtasksList = Managers.getDefault().getEpicsSubtasks(number);
+                    ArrayList<Subtask> subtasksList = inMemoryTaskManager.getEpicsSubtasks(number);
                     for (Subtask subtasken : subtasksList) {
                         System.out.println(subtasken.toString());
                     }

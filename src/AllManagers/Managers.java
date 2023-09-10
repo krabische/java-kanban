@@ -1,3 +1,5 @@
+package AllManagers;
+
 public class Managers {
 
     public static TaskManager getDefault() {

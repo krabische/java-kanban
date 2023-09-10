@@ -1,12 +1,17 @@
+package AllManagers;
+
+import AllTasks.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
 
     private int numberOfTask = 0;
-    HashMap<Integer, Task> tasks = new HashMap<>();
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    public HashMap<Integer, Task> tasks = new HashMap<>();
+    public HashMap<Integer, Epic> epics = new HashMap<>();
+    public HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
 
     @Override
@@ -94,7 +99,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeSubtasks() {
         for (Epic epic : epics.values()) {
             epic.subtaskIdsClear();
-            epic.statusOfTask = Status.NEW;
+            epic.setStatusOfTask(Status.NEW);
         }
         subtasks.clear();
     }
@@ -149,7 +154,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateStatus(Integer epicId) {
+    public List<Task> getHistory() {
+        return Managers.getDefaultHistory().getHistory();
+    }
+
+    private void updateStatus(Integer epicId) {
         Epic epic = epics.get(epicId);
         if (epic != null) {
             boolean containsDone = false;
@@ -159,9 +168,9 @@ public class InMemoryTaskManager implements TaskManager {
             for (Integer subtaskId : epic.getSubtaskIds()) {
                 Subtask subtask = subtasks.get(subtaskId);
                 if (subtask != null) {
-                    if (subtask.statusOfTask.equals(Status.NEW)) {
+                    if (subtask.getStatusOfTask().equals(Status.NEW)) {
                         containsNew = true;
-                    } else if (subtask.statusOfTask.equals(Status.DONE)) {
+                    } else if (subtask.getStatusOfTask().equals(Status.DONE)) {
                         containsDone = true;
                     } else {
                         containsInProgress = true;
@@ -170,19 +179,19 @@ public class InMemoryTaskManager implements TaskManager {
             }
 
             if (containsInProgress || containsNew && containsDone) {
-                epic.statusOfTask = Status.IN_PROGRESS;
+                epic.setStatusOfTask(Status.IN_PROGRESS);
             } else if (containsNew && !containsDone && !containsInProgress) { // добавил все взаимоисключающие варианты
-                epic.statusOfTask = Status.NEW;
+                epic.setStatusOfTask(Status.NEW);
             } else if (containsDone && !containsNew && !containsInProgress) {
-                epic.statusOfTask = Status.DONE;
+                epic.setStatusOfTask(Status.DONE);
             } else {
-                epic.statusOfTask = Status.NEW;
+                epic.setStatusOfTask(Status.NEW);
             }
         }
     }
 
-    @Override
-    public int getNumberOfTask() {
+
+    private int getNumberOfTask() {
         numberOfTask++;
         return numberOfTask;
     }
