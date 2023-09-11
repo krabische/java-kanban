@@ -1,16 +1,11 @@
 package allManagers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import allTasks.*;
 
 public interface TaskManager {
-
-    HashMap<Integer, Task> tasks = new HashMap<>();
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     Task getTask(Integer insert);
 

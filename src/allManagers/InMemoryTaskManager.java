@@ -16,19 +16,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(Integer insert) {
-        Managers.getDefaultHistory().setCalledTasks(tasks.get(insert));
+        Managers.getDefaultHistory().addCalledTasks(tasks.get(insert));
         return tasks.get(insert);
     }
 
     @Override
     public Epic getEpic(Integer insert) {
-        Managers.getDefaultHistory().setCalledTasks(epics.get(insert));
+        Managers.getDefaultHistory().addCalledTasks(epics.get(insert));
         return epics.get(insert);
     }
 
     @Override
     public Subtask getSubtask(Integer insert) {
-        Managers.getDefaultHistory().setCalledTasks(subtasks.get(insert));
+        Managers.getDefaultHistory().addCalledTasks(subtasks.get(insert));
         return subtasks.get(insert);
     }
 
