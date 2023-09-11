@@ -1,18 +1,14 @@
-package allManagers;
+package allmanagers;
 
-import allTasks.*;
+import alltasks.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager { //работает с хистори задач
 
 
-    private static final List<Task> calledTasks = new ArrayList<>();
+    private final List<Task> calledTasks = new ArrayList<>();
 
-    @Override
-    public List<Task> getCalledTasks() {
-        return calledTasks;
-    }
 
     @Override
     public void addCalledTasks(Task task) {
@@ -24,6 +20,6 @@ public class InMemoryHistoryManager implements HistoryManager { //работае
 
     @Override
     public List<Task> getHistory() {
-        return getCalledTasks();
+        return calledTasks;
     }
 }

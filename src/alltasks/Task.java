@@ -1,4 +1,4 @@
-package allTasks;
+package alltasks;
 
 public class Task {
     private int id;

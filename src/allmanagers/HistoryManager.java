@@ -1,10 +1,9 @@
-package allManagers;
-import allTasks.*;
+package allmanagers;
+import alltasks.*;
 
 import java.util.List;
 
 public interface HistoryManager {
-    List<Task> getCalledTasks();
 
     void addCalledTasks(Task task);
 

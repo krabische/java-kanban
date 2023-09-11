@@ -1,5 +1,5 @@
-import allManagers.*;
-import allTasks.*;
+import allmanagers.*;
+import alltasks.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,14 +69,15 @@ public class Main {
                 case 5:
                     System.out.print("Введите ID задачи: ");
                     insert = scanner.nextInt();
-                    if (insert <= inMemoryTaskManager.tasks.size()) {
+                    if (inMemoryTaskManager.tasks.containsKey(insert)) {
                         System.out.println(inMemoryTaskManager.getTask(insert));
-                    } else {
+                    } else if (inMemoryTaskManager.epics.containsKey(insert))  {
                         System.out.println(inMemoryTaskManager.getEpic(insert));
-                    }
-                    if (inMemoryTaskManager.subtasks.containsKey(insert)) {
-                        System.out.println("Подзадачи:");
+                    } else if (inMemoryTaskManager.subtasks.containsKey(insert)) {
+                        System.out.println("Подзадача:");
                         System.out.println(inMemoryTaskManager.getSubtask(insert));
+                    } else {
+                        System.out.println("Такой задачи нет!");
                     }
                     break;
                 case 6:
@@ -172,7 +173,7 @@ public class Main {
 
                 case 12:
                     System.out.println("История последних просмотренных задач");
-                    List<Task> tasksHistory = Managers.getDefaultHistory().getCalledTasks();
+                    List<Task> tasksHistory = inMemoryTaskManager.getHistory();
                     System.out.println(tasksHistory);
                     break;
 
