@@ -1,6 +1,6 @@
-package AllManagers;
+package allManagers;
 
-import AllTasks.*;
+import allTasks.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

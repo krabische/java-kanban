@@ -1,4 +1,4 @@
-package AllManagers;
+package allManagers;
 
 public class Managers {
 

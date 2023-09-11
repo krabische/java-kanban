@@ -1,5 +1,5 @@
-import AllManagers.*;
-import AllTasks.*;
+import allManagers.*;
+import allTasks.*;
 
 import java.util.ArrayList;
 import java.util.List;

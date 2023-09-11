@@ -1,10 +1,10 @@
-package AllManagers;
+package allManagers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import AllTasks.*;
+import allTasks.*;
 
 public interface TaskManager {
 
