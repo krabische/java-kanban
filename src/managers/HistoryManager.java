@@ -1,5 +1,5 @@
-package allmanagers;
-import alltasks.*;
+package managers;
+import tasks.*;
 
 import java.util.List;
 
