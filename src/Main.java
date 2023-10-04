@@ -18,7 +18,7 @@ public class Main {
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
         while (true) {
-            menu();
+            printMenu();
             insert = scanner.nextInt();
             switch (insert) {
                 case 1:
@@ -32,13 +32,13 @@ public class Main {
                         System.out.println(epicen.toString());
                         System.out.println("    Подзадачи:");
                         for (Integer subtaskId : epicen.getSubtaskIds()) {
-                            Subtask subtasken = inMemoryTaskManager.subtasks.get(subtaskId);
+                            Subtask subtasken = inMemoryTaskManager.getSubtasks().get(subtaskId);
                             System.out.println("    " + subtasken.toString());
                         }
                     }
                     break;
                 case 2:
-                    System.out.println("Введите задачу");
+                    System.out.println("Задачи созданы!");
                     task = new Task("Убраться", "помыть полы");
                     inMemoryTaskManager.putTask(task);
                     task = new Task("Погулять", "увидеться с Вовой");
@@ -49,7 +49,7 @@ public class Main {
                     inMemoryTaskManager.putEpic(epic);
                     break;
                 case 3:
-                    System.out.println("Введите подзадачу:");
+                    System.out.println("Подзадачи созданы!");
                     epicId = 3;
                     subtask = new Subtask("Шурупы", "Купить шурупы", epicId);
                     inMemoryTaskManager.putSubtask(subtask);
@@ -61,19 +61,19 @@ public class Main {
                     inMemoryTaskManager.putSubtask(subtask);
                     break;
                 case 4:
-                    inMemoryTaskManager.tasks.clear();
-                    inMemoryTaskManager.epics.clear();
-                    inMemoryTaskManager.subtasks.clear();
+                    inMemoryTaskManager.getTasks().clear();
+                    inMemoryTaskManager.getEpics().clear();
+                    inMemoryTaskManager.getSubtasks().clear();
                     System.out.println("Все задачи удалены!");
                     break;
                 case 5:
                     System.out.print("Введите ID задачи: ");
                     insert = scanner.nextInt();
-                    if (inMemoryTaskManager.tasks.containsKey(insert)) {
+                    if (inMemoryTaskManager.getTasks().containsKey(insert)) {
                         System.out.println(inMemoryTaskManager.getTask(insert));
-                    } else if (inMemoryTaskManager.epics.containsKey(insert))  {
+                    } else if (inMemoryTaskManager.getEpics().containsKey(insert))  {
                         System.out.println(inMemoryTaskManager.getEpic(insert));
-                    } else if (inMemoryTaskManager.subtasks.containsKey(insert)) {
+                    } else if (inMemoryTaskManager.getSubtasks().containsKey(insert)) {
                         System.out.println("Подзадача:");
                         System.out.println(inMemoryTaskManager.getSubtask(insert));
                     } else {
@@ -84,15 +84,15 @@ public class Main {
                     System.out.print("Введите ID задачи, которую хотите обновить: ");
                     number = scanner.nextInt();
                     System.out.print("Введите новую задачу: ");
-                    if (inMemoryTaskManager.tasks.get(number) != null) {
+                    if (inMemoryTaskManager.getTasks().get(number) != null) {
                         task = new Task(number, "Помыть посуду", "убрать после гостей", Status.DONE);
                         inMemoryTaskManager.changeTask(task);
                         break;
-                    } else if (inMemoryTaskManager.epics.get(number) != null) {
+                    } else if (inMemoryTaskManager.getEpics().get(number) != null) {
                         epic = new Epic(number, "Помыть посуду", "убрать после гостей", Status.DONE);
                         inMemoryTaskManager.changeEpic(epic);
                         break;
-                    } else if (inMemoryTaskManager.subtasks.get(number) != null) {
+                    } else if (inMemoryTaskManager.getSubtasks().get(number) != null) {
                         subtask = new Subtask(number, "Помыть посуду", "убрать после гостей", Status.DONE);
                         inMemoryTaskManager.changeSubtask(subtask);
                         break;
@@ -102,13 +102,13 @@ public class Main {
                 case 7:
                     System.out.print("Введите ID задачи, которую хотите удалить: ");
                     number = scanner.nextInt();
-                    if (inMemoryTaskManager.tasks.get(number) != null) {
+                    if (inMemoryTaskManager.getTasks().get(number) != null) {
                         inMemoryTaskManager.removeTask(number);
                         break;
-                    } else if (inMemoryTaskManager.epics.get(number) != null) {
+                    } else if (inMemoryTaskManager.getEpics().get(number) != null) {
                         inMemoryTaskManager.removeEpic(number);
                         break;
-                    } else if (inMemoryTaskManager.subtasks.get(number) != null) {
+                    } else if (inMemoryTaskManager.getSubtasks().get(number) != null) {
                         inMemoryTaskManager.removeSubtask(number);
                         break;
                     }
@@ -117,7 +117,7 @@ public class Main {
                 case 8:
                     System.out.println("Введите номер эпика, у которого хотите просмотреть подзадачи: ");
                     number = scanner.nextInt();
-                    System.out.println(inMemoryTaskManager.subtasks.get(number));
+                    System.out.println(inMemoryTaskManager.getSubtasks().get(number));
                     break;
                 case 9: {
                     System.out.println("Введите группу задач, которую вы хотите вывести: " +
@@ -184,20 +184,20 @@ public class Main {
         }
     }
 
-    static void menu() {
-        System.out.println("Выберите один из пунктов: " +
-                "1. Посмотреть список задач " +
-                "2. Добавить задачу " +
-                "3. Добавить подзадачу " +
-                "4. Удалить все задачи " +
-                "5. Найти задачу по ID " +
-                "6. Обновить задачу " +
-                "7. Удалить задачу по ID " +
-                "8. Просмотр подзадач " +
-                "9. Вывести группу задач " +
-                "10. Удалить группу задач " +
-                "11. Вывести подзадачи эпика " +
-                "12. Вывести историю" +
-                "13. Выход ");
+    static void printMenu() {
+        System.out.println("Выберите один из пунктов: \n" +
+                "1. Посмотреть список задач \n" +
+                "2. Добавить задачу \n" +
+                "3. Добавить подзадачу \n" +
+                "4. Удалить все задачи \n" +
+                "5. Найти задачу по ID \n" +
+                "6. Обновить задачу \n" +
+                "7. Удалить задачу по ID \n" +
+                "8. Просмотр подзадач \n" +
+                "9. Вывести группу задач \n" +
+                "10. Удалить группу задач \n" +
+                "11. Вывести подзадачи эпика \n" +
+                "12. Вывести историю \n" +
+                "13. Выход \n");
     }
 }

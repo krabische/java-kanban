@@ -6,10 +6,10 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager { //работает с хистори задач
 
-
-    // private final List<Task> calledTasks = new ArrayList<>();
-    Map<Integer, Node<Task>> historyMap = new HashMap<>();
-
+    private Map<Integer, Node<Task>> historyMap = new HashMap<>();
+    private Node<Task> head;
+    private Node<Task> tail;
+    private int size = 0;
 
     @Override
     public void add(Task task) {
@@ -40,11 +40,7 @@ public class InMemoryHistoryManager implements HistoryManager { //работае
         return getTasks();
     }
 
-    public Node<Task> head;
-    public Node<Task> tail;
-    public int size = 0;
-
-    public void linkLast(Task element) {
+    private void linkLast(Task element) {
         final Node<Task> oldTail = tail;
         Node<Task> newNode = new Node<>(oldTail, element, null);
         tail = newNode;
@@ -56,7 +52,7 @@ public class InMemoryHistoryManager implements HistoryManager { //работае
         size++;
     }
 
-    public void removeNode(Node<Task> nodeToRemove) {
+    private void removeNode(Node<Task> nodeToRemove) {
         if (head == nodeToRemove) {
             head = nodeToRemove.next;
             if (head != null) {
@@ -76,7 +72,7 @@ public class InMemoryHistoryManager implements HistoryManager { //работае
         size--;
     }
 
-    public List<Task> getTasks() {
+    private List<Task> getTasks() {
         List<Task> nodeTasks = new ArrayList<>();
         Node<Task> current = head;
         while (current != null) {
@@ -85,6 +81,19 @@ public class InMemoryHistoryManager implements HistoryManager { //работае
         }
         return nodeTasks;
     }
+
+    class Node<T> {
+        public T data;
+        public Node<T> next;
+        public Node<T> prev;
+
+        public Node(Node<T> prev, T data, Node<T> next) {
+            this.data = data;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+
 
 }
 
