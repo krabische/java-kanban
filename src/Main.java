@@ -71,7 +71,7 @@ public class Main {
                     insert = scanner.nextInt();
                     if (inMemoryTaskManager.getTasks().containsKey(insert)) {
                         System.out.println(inMemoryTaskManager.getTask(insert));
-                    } else if (inMemoryTaskManager.getEpics().containsKey(insert))  {
+                    } else if (inMemoryTaskManager.getEpics().containsKey(insert)) {
                         System.out.println(inMemoryTaskManager.getEpic(insert));
                     } else if (inMemoryTaskManager.getSubtasks().containsKey(insert)) {
                         System.out.println("Подзадача:");
