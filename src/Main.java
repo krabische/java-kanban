@@ -1,12 +1,17 @@
 import managers.*;
+
+import resources.FileReader;
 import tasks.*;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         int insert;
         int number;
         Integer epicId;
@@ -15,67 +20,72 @@ public class Main {
         Epic epic;
         Subtask subtask;
         Scanner scanner = new Scanner(System.in);
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-
+        BufferedReader fileReader = new BufferedReader(new FileReader("./java-kanban/src/resources/AllTasks.csv"));
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
         while (true) {
             printMenu();
             insert = scanner.nextInt();
             switch (insert) {
-                case 1:
-                    ArrayList<Task> tasks = inMemoryTaskManager.getAllTasks();
+                /*  case 1:
+                    ArrayList<Task> tasks = fileBackedTasksManager.getAllTasks();
                     System.out.println("Задачи:");
                     for (Task tasken : tasks) {
                         System.out.println(tasken.toString());
                     }
-                    ArrayList<Epic> epics = inMemoryTaskManager.getAllEpics();
+                    ArrayList<Epic> epics = fileBackedTasksManager.getAllEpics();
                     for (Epic epicen : epics) {
                         System.out.println(epicen.toString());
                         System.out.println("    Подзадачи:");
                         for (Integer subtaskId : epicen.getSubtaskIds()) {
-                            Subtask subtasken = inMemoryTaskManager.getSubtasks().get(subtaskId);
+                            Subtask subtasken = fileBackedTasksManager.getSubtasks().get(subtaskId);
                             System.out.println("    " + subtasken.toString());
                         }
                     }
-                    break;
-                case 2:
+                    break; */
+                /*case 2:
                     System.out.println("Задачи созданы!");
                     task = new Task("Убраться", "помыть полы");
-                    inMemoryTaskManager.putTask(task);
+                    fileBackedTasksManager.putTask(task);
                     task = new Task("Погулять", "увидеться с Вовой");
-                    inMemoryTaskManager.putTask(task);
+                    fileBackedTasksManager.putTask(task);
                     epic = new Epic("Починить телевизор", "сломался экран");
-                    inMemoryTaskManager.putEpic(epic);
+                    fileBackedTasksManager.putEpic(epic);
                     epic = new Epic("Купить собаку", "найти продавца и договориться о встречи");
-                    inMemoryTaskManager.putEpic(epic);
-                    break;
-                case 3:
+                    fileBackedTasksManager.putEpic(epic);
+                    break; */
+               /* case 3:
                     System.out.println("Подзадачи созданы!");
                     epicId = 3;
                     subtask = new Subtask("Шурупы", "Купить шурупы", epicId);
-                    inMemoryTaskManager.putSubtask(subtask);
+                    fileBackedTasksManager.putSubtask(subtask);
                     epicId = 4;
                     subtask = new Subtask("Купить ей домик", "на сайте", epicId);
-                    inMemoryTaskManager.putSubtask(subtask);
+                    fileBackedTasksManager.putSubtask(subtask);
                     epicId = 4;
                     subtask = new Subtask("Купить ей корм", "на рынке", epicId);
-                    inMemoryTaskManager.putSubtask(subtask);
+                    fileBackedTasksManager.putSubtask(subtask);
+                    break; */
+                case 1:
+                    for (Task file : fileBackedTasksManager.files) {
+                        System.out.println(file); // Вызывает метод toString() для каждой задачи
+                    }
                     break;
                 case 4:
-                    inMemoryTaskManager.getTasks().clear();
-                    inMemoryTaskManager.getEpics().clear();
-                    inMemoryTaskManager.getSubtasks().clear();
+                    fileBackedTasksManager.getTasks().clear();
+                    fileBackedTasksManager.getEpics().clear();
+                    fileBackedTasksManager.getSubtasks().clear();
                     System.out.println("Все задачи удалены!");
                     break;
                 case 5:
                     System.out.print("Введите ID задачи: ");
                     insert = scanner.nextInt();
-                    if (inMemoryTaskManager.getTasks().containsKey(insert)) {
-                        System.out.println(inMemoryTaskManager.getTask(insert));
-                    } else if (inMemoryTaskManager.getEpics().containsKey(insert)) {
-                        System.out.println(inMemoryTaskManager.getEpic(insert));
-                    } else if (inMemoryTaskManager.getSubtasks().containsKey(insert)) {
+                    if (fileBackedTasksManager.getTasks().containsKey(insert)) {
+                        System.out.println(fileBackedTasksManager.getTask(insert));
+                    } else if (fileBackedTasksManager.getEpics().containsKey(insert)) {
+                        System.out.println(fileBackedTasksManager.getEpic(insert));
+                    } else if (fileBackedTasksManager.getSubtasks().containsKey(insert)) {
                         System.out.println("Подзадача:");
-                        System.out.println(inMemoryTaskManager.getSubtask(insert));
+                        System.out.println(fileBackedTasksManager.getSubtask(insert));
                     } else {
                         System.out.println("Такой задачи нет!");
                     }
@@ -84,17 +94,17 @@ public class Main {
                     System.out.print("Введите ID задачи, которую хотите обновить: ");
                     number = scanner.nextInt();
                     System.out.print("Введите новую задачу: ");
-                    if (inMemoryTaskManager.getTasks().get(number) != null) {
+                    if (fileBackedTasksManager.getTasks().get(number) != null) {
                         task = new Task(number, "Помыть посуду", "убрать после гостей", Status.DONE);
-                        inMemoryTaskManager.changeTask(task);
+                        fileBackedTasksManager.changeTask(task);
                         break;
-                    } else if (inMemoryTaskManager.getEpics().get(number) != null) {
+                    } else if (fileBackedTasksManager.getEpics().get(number) != null) {
                         epic = new Epic(number, "Помыть посуду", "убрать после гостей", Status.DONE);
-                        inMemoryTaskManager.changeEpic(epic);
+                        fileBackedTasksManager.changeEpic(epic);
                         break;
-                    } else if (inMemoryTaskManager.getSubtasks().get(number) != null) {
+                    } else if (fileBackedTasksManager.getSubtasks().get(number) != null) {
                         subtask = new Subtask(number, "Помыть посуду", "убрать после гостей", Status.DONE);
-                        inMemoryTaskManager.changeSubtask(subtask);
+                        fileBackedTasksManager.changeSubtask(subtask);
                         break;
                     }
                     System.out.println("Задача обновлена!");
@@ -102,14 +112,14 @@ public class Main {
                 case 7:
                     System.out.print("Введите ID задачи, которую хотите удалить: ");
                     number = scanner.nextInt();
-                    if (inMemoryTaskManager.getTasks().get(number) != null) {
-                        inMemoryTaskManager.removeTask(number);
+                    if (fileBackedTasksManager.getTasks().get(number) != null) {
+                        fileBackedTasksManager.removeTask(number);
                         break;
-                    } else if (inMemoryTaskManager.getEpics().get(number) != null) {
-                        inMemoryTaskManager.removeEpic(number);
+                    } else if (fileBackedTasksManager.getEpics().get(number) != null) {
+                        fileBackedTasksManager.removeEpic(number);
                         break;
-                    } else if (inMemoryTaskManager.getSubtasks().get(number) != null) {
-                        inMemoryTaskManager.removeSubtask(number);
+                    } else if (fileBackedTasksManager.getSubtasks().get(number) != null) {
+                        fileBackedTasksManager.removeSubtask(number);
                         break;
                     }
                     System.out.println("Задача удалена!");
@@ -117,7 +127,7 @@ public class Main {
                 case 8:
                     System.out.println("Введите номер эпика, у которого хотите просмотреть подзадачи: ");
                     number = scanner.nextInt();
-                    System.out.println(inMemoryTaskManager.getSubtasks().get(number));
+                    System.out.println(fileBackedTasksManager.getSubtasks().get(number));
                     break;
                 case 9: {
                     System.out.println("Введите группу задач, которую вы хотите вывести: " +
@@ -125,20 +135,20 @@ public class Main {
                     number = scanner.nextInt();
                     switch (number) {
                         case 1:
-                            ArrayList<Task> tasksList = inMemoryTaskManager.getAllTasks();
+                            ArrayList<Task> tasksList = fileBackedTasksManager.getAllTasks();
                             for (Task tasken : tasksList) {
                                 System.out.println(tasken.toString());
                             }
                             break;
                         case 2:
-                            ArrayList<Epic> epicsList = inMemoryTaskManager.getAllEpics();
+                            ArrayList<Epic> epicsList = fileBackedTasksManager.getAllEpics();
                             for (Epic epicen : epicsList) {
                                 System.out.println(epicen.toString());
                             }
 
                             break;
                         case 3:
-                            ArrayList<Subtask> subtasksList = inMemoryTaskManager.getAllSubtasks();
+                            ArrayList<Subtask> subtasksList = fileBackedTasksManager.getAllSubtasks();
                             for (Subtask subtasken : subtasksList) {
                                 System.out.println(subtasken.toString());
                             }
@@ -151,13 +161,13 @@ public class Main {
                     number = scanner.nextInt();
                     switch (number) {
                         case 1:
-                            inMemoryTaskManager.removeTasks();
+                            fileBackedTasksManager.removeTasks();
                             break;
                         case 2:
-                            inMemoryTaskManager.removeEpics();
+                            fileBackedTasksManager.removeEpics();
                             break;
                         case 3:
-                            inMemoryTaskManager.removeSubtasks();
+                            fileBackedTasksManager.removeSubtasks();
                             break;
                     }
                     break;
@@ -165,7 +175,7 @@ public class Main {
                 case 11:
                     System.out.println("Введите номер эпика: ");
                     number = scanner.nextInt();
-                    ArrayList<Subtask> subtasksList = inMemoryTaskManager.getEpicsSubtasks(number);
+                    ArrayList<Subtask> subtasksList = fileBackedTasksManager.getEpicsSubtasks(number);
                     for (Subtask subtasken : subtasksList) {
                         System.out.println(subtasken.toString());
                     }
@@ -173,7 +183,7 @@ public class Main {
 
                 case 12:
                     System.out.println("История последних просмотренных задач");
-                    List<Task> tasksHistory = inMemoryTaskManager.getHistory();
+                    List<Task> tasksHistory = fileBackedTasksManager.getHistory();
                     System.out.println(tasksHistory);
                     break;
 
@@ -187,8 +197,8 @@ public class Main {
     static void printMenu() {
         System.out.println("Выберите один из пунктов: \n" +
                 "1. Посмотреть список задач \n" +
-                "2. Добавить задачу \n" +
-                "3. Добавить подзадачу \n" +
+               /* "2. Добавить задачу \n" +
+                "3. Добавить подзадачу \n" + */
                 "4. Удалить все задачи \n" +
                 "5. Найти задачу по ID \n" +
                 "6. Обновить задачу \n" +
