@@ -1,9 +1,7 @@
 import managers.*;
 
-import resources.FileReader;
 import tasks.*;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
@@ -14,61 +12,50 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         int insert;
         int number;
-        Integer epicId;
 
         Task task;
         Epic epic;
         Subtask subtask;
         Scanner scanner = new Scanner(System.in);
-        BufferedReader fileReader = new BufferedReader(new FileReader("./java-kanban/src/resources/AllTasks.csv"));
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager();
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("/Users/krabische/dev/java-kanban/src/resources/AllTasks.csv", historyManager);
+
         while (true) {
             printMenu();
             insert = scanner.nextInt();
             switch (insert) {
-                /*  case 1:
+                case 1:
                     ArrayList<Task> tasks = fileBackedTasksManager.getAllTasks();
                     System.out.println("Задачи:");
                     for (Task tasken : tasks) {
-                        System.out.println(tasken.toString());
+                        try {
+                            System.out.println(tasken.toString());
+                        } catch (NullPointerException e) {
+                            break;
+                        }
                     }
                     ArrayList<Epic> epics = fileBackedTasksManager.getAllEpics();
                     for (Epic epicen : epics) {
+                        try {
                         System.out.println(epicen.toString());
+                        } catch (NullPointerException e) {
+                            break;
+                        }
                         System.out.println("    Подзадачи:");
                         for (Integer subtaskId : epicen.getSubtaskIds()) {
-                            Subtask subtasken = fileBackedTasksManager.getSubtasks().get(subtaskId);
-                            System.out.println("    " + subtasken.toString());
+                            try {
+                                Subtask subtasken = fileBackedTasksManager.getSubtasks().get(subtaskId);
+                                System.out.println("    " + subtasken.toString());
+                            } catch (NullPointerException e){
+                                break;
+                            }
                         }
                     }
-                    break; */
-                /*case 2:
-                    System.out.println("Задачи созданы!");
+                    break;
+                case 2:
+                    System.out.println("Задача добавлена");
                     task = new Task("Убраться", "помыть полы");
                     fileBackedTasksManager.putTask(task);
-                    task = new Task("Погулять", "увидеться с Вовой");
-                    fileBackedTasksManager.putTask(task);
-                    epic = new Epic("Починить телевизор", "сломался экран");
-                    fileBackedTasksManager.putEpic(epic);
-                    epic = new Epic("Купить собаку", "найти продавца и договориться о встречи");
-                    fileBackedTasksManager.putEpic(epic);
-                    break; */
-               /* case 3:
-                    System.out.println("Подзадачи созданы!");
-                    epicId = 3;
-                    subtask = new Subtask("Шурупы", "Купить шурупы", epicId);
-                    fileBackedTasksManager.putSubtask(subtask);
-                    epicId = 4;
-                    subtask = new Subtask("Купить ей домик", "на сайте", epicId);
-                    fileBackedTasksManager.putSubtask(subtask);
-                    epicId = 4;
-                    subtask = new Subtask("Купить ей корм", "на рынке", epicId);
-                    fileBackedTasksManager.putSubtask(subtask);
-                    break; */
-                case 1:
-                    for (Task file : fileBackedTasksManager.files) {
-                        System.out.println(file); // Вызывает метод toString() для каждой задачи
-                    }
                     break;
                 case 4:
                     fileBackedTasksManager.getTasks().clear();
@@ -95,15 +82,15 @@ public class Main {
                     number = scanner.nextInt();
                     System.out.print("Введите новую задачу: ");
                     if (fileBackedTasksManager.getTasks().get(number) != null) {
-                        task = new Task(number, "Помыть посуду", "убрать после гостей", Status.DONE);
+                        task = new Task(number, "Помыть посуду", Status.DONE, "убрать после гостей", 0);
                         fileBackedTasksManager.changeTask(task);
                         break;
                     } else if (fileBackedTasksManager.getEpics().get(number) != null) {
-                        epic = new Epic(number, "Помыть посуду", "убрать после гостей", Status.DONE);
+                        epic = new Epic(number, "Помыть посуду", Status.DONE, "убрать после гостей", 0);
                         fileBackedTasksManager.changeEpic(epic);
                         break;
                     } else if (fileBackedTasksManager.getSubtasks().get(number) != null) {
-                        subtask = new Subtask(number, "Помыть посуду", "убрать после гостей", Status.DONE);
+                        subtask = new Subtask(number, "Помыть посуду", Status.DONE, "убрать после гостей", fileBackedTasksManager.getSubtasks().get(number).getEpicId());
                         fileBackedTasksManager.changeSubtask(subtask);
                         break;
                     }
@@ -184,7 +171,9 @@ public class Main {
                 case 12:
                     System.out.println("История последних просмотренных задач");
                     List<Task> tasksHistory = fileBackedTasksManager.getHistory();
-                    System.out.println(tasksHistory);
+                    for (Task t : tasksHistory) {
+                        System.out.println(t.toString());
+                    }
                     break;
 
                 case 13:
@@ -197,8 +186,8 @@ public class Main {
     static void printMenu() {
         System.out.println("Выберите один из пунктов: \n" +
                 "1. Посмотреть список задач \n" +
-               /* "2. Добавить задачу \n" +
-                "3. Добавить подзадачу \n" + */
+                "2. Добавить задачу \n" +
+                "3. Добавить подзадачу \n" +
                 "4. Удалить все задачи \n" +
                 "5. Найти задачу по ID \n" +
                 "6. Обновить задачу \n" +

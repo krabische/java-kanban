@@ -8,28 +8,28 @@ public class Task {
     protected String description;
 
 
-    protected String epic;
+    protected int epic;
     protected Status statusOfTask = Status.NEW;
 
     public Task(String taskName, String description) {
         this.taskName = taskName;
         this.description = description;
+        this.status = statusOfTask;
+        this.type = TaskTypes.TASK;
     }
 
-    public Task(int id, String taskName, String description, Status statusOfTask) {
-        this.id = id;
-        this.taskName = taskName;
-        this.description = description;
-        this.statusOfTask = statusOfTask;
-    }
 
-    public Task(int id, String taskName, Status status, String description, String epic) {
+    public Task(int id, String taskName, Status status, String description, int epic) {
         this.id = id;
         this.type = TaskTypes.TASK;
         this.taskName = taskName;
         this.status = status;
         this.description = description;
         this.epic = epic;
+    }
+
+    public Task() {
+
     }
 
     public int getId() {
@@ -52,7 +52,7 @@ public class Task {
         return status;
     }
 
-    public String getEpic() {
+    public int getEpic() {
         return epic;
     }
 
@@ -72,7 +72,7 @@ public class Task {
     }
 
     public String toStringFromFile() {
-        return String.format("%s,%s,%s,%s,%s,%s", id, type, taskName, status, description, "");
+        return String.format("%s,%s,%s,%s,%s,%s", id, type, taskName, status, description, epic);
     }
 
     public Status getStatusOfTask() {

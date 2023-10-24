@@ -6,19 +6,28 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager { //работает с хистори задач
 
-    private Map<Integer, Node<Task>> historyMap = new HashMap<>();
+    public InMemoryHistoryManager() {
+        this.historyMap = new HashMap<>();
+    }
+
+    private Map<Integer, Node<Task>> historyMap;
     private Node<Task> head;
     private Node<Task> tail;
     private int size = 0;
 
     @Override
     public void add(Task task) {
+        if (task == null) {
+            System.out.println("Task is null");
+            return;
+        }
+
         if (historyMap.containsKey(task.getId())) {
             Node<Task> nodeToRemove = historyMap.get(task.getId());
             removeNode(nodeToRemove);
             historyMap.remove(task.getId());
         }
-        if (size >= 10) {
+        if (size >= 10 && head != null) {
             Task oldestTask = head.data;
             Node<Task> nodeToRemove = head;
             historyMap.remove(oldestTask.getId());
