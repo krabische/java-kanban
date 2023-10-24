@@ -14,10 +14,15 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
-    InMemoryHistoryManager historyManager;
+    HistoryManager historyManager;
+
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+
+    }
 
     public InMemoryTaskManager() {
-        this.historyManager = new InMemoryHistoryManager();
     }
 
     public HashMap<Integer, Task> getTasks() {
@@ -35,7 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(Integer id) {
-        historyManager.add(tasks.get(id)); //!!!!!!
+        historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
 

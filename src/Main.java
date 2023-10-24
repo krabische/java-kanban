@@ -18,6 +18,7 @@ public class Main {
         Subtask subtask;
         Scanner scanner = new Scanner(System.in);
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager(historyManager);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("/Users/krabische/dev/java-kanban/src/resources/AllTasks.csv", historyManager);
 
         while (true) {
@@ -170,7 +171,7 @@ public class Main {
 
                 case 12:
                     System.out.println("История последних просмотренных задач");
-                    List<Task> tasksHistory = fileBackedTasksManager.getHistory();
+                    List<Task> tasksHistory = historyManager.getHistory();
                     for (Task t : tasksHistory) {
                         System.out.println(t.toString());
                     }

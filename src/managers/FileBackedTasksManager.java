@@ -12,10 +12,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private File file;
     private String fileName;
 
-    private InMemoryHistoryManager historyManager;
+    private HistoryManager historyManager;
 
-
-    public FileBackedTasksManager(String fileName, InMemoryHistoryManager historyManager) {
+    public FileBackedTasksManager(String fileName, HistoryManager historyManager) {
+        super(historyManager);
         this.fileName = fileName;
         this.file = new File(fileName);
         this.historyManager = historyManager;
@@ -111,6 +111,28 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     @Override
     public void addSubtask(Subtask subtask) {
         super.addSubtask(subtask);
+
+    }
+
+    @Override
+    public Task getTask(Integer id) {
+        Task task = super.getTask(id);
+        save();
+        return task;
+    }
+
+    @Override
+    public Epic getEpic(Integer id) {
+        Epic epic = super.getEpic(id);
+        save();
+        return epic;
+    }
+
+    @Override
+    public Subtask getSubtask(Integer id) {
+        Subtask subtask = super.getSubtask(id);
+        save();
+        return subtask;
     }
 
     @Override

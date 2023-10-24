@@ -1,6 +1,8 @@
 id,type,name,status,description,epic
-1,TASK,Task1,NEW,Description task1,
-2,EPIC,Epic2,DONE,Description epic2,
+1,TASK,Task1,NEW,Description task1,0
+2,EPIC,Epic2,DONE,Description epic2,0
 3,SUBTASK,Sub Task2,DONE,Description sub task3,2
-
-2,3
+4,TASK,Убраться,NEW,помыть полы,0
+5,TASK,Убраться,NEW,помыть полы,0
+ 
+null,2,3,1,4
