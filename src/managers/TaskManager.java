@@ -13,11 +13,11 @@ public interface TaskManager {
 
     Subtask getSubtask(Integer insert);
 
-    void putTask(Task task);
+    void addTask(Task task);
 
-    void putEpic(Epic epic);
+    void addEpic(Epic epic);
 
-    void putSubtask(Subtask subtask);
+    void addSubtask(Subtask subtask);
 
     void changeEpic(Epic epic);
 

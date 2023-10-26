@@ -18,6 +18,14 @@ public class Task {
         this.type = TaskTypes.TASK;
     }
 
+    public Task(String taskName, String description, int epic) {
+        this.epic = epic;
+        this.taskName = taskName;
+        this.description = description;
+        this.status = statusOfTask;
+        this.type = TaskTypes.TASK;
+    }
+
 
     public Task(int id, String taskName, Status status, String description, int epic) {
         this.id = id;
@@ -28,9 +36,6 @@ public class Task {
         this.epic = epic;
     }
 
-    public Task() {
-
-    }
 
     public int getId() {
         return id;
