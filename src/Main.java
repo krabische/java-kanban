@@ -5,13 +5,11 @@ import tasks.*;
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
 
-        String fileName = "/Users/krabische/dev/java-kanban/src/resources/AllTasks.csv";
+        String fileName = "./src/resources/AllTasks.csv";
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(fileName);
 
         Task task = new Task("Убраться", "помыть полы");
@@ -34,89 +32,36 @@ public class Main {
         subtask = new Subtask("Купить ей корм", "на рынке", 4);
         fileBackedTasksManager.addSubtask(subtask);
 
-        int insert = 1;
-        if (fileBackedTasksManager.getTasks().containsKey(insert)) {
-            System.out.println(fileBackedTasksManager.getTask(insert));
-        } else if (fileBackedTasksManager.getEpics().containsKey(insert)) {
-            System.out.println(fileBackedTasksManager.getEpic(insert));
-        } else if (fileBackedTasksManager.getSubtasks().containsKey(insert)) {
-            System.out.println("Подзадача:");
-            System.out.println(fileBackedTasksManager.getSubtask(insert));
-        } else {
-            System.out.println("Такой задачи нет!");
-        }
 
-        insert = 6;
-        if (fileBackedTasksManager.getTasks().containsKey(insert)) {
-            System.out.println(fileBackedTasksManager.getTask(insert));
-        } else if (fileBackedTasksManager.getEpics().containsKey(insert)) {
-            System.out.println(fileBackedTasksManager.getEpic(insert));
-        } else if (fileBackedTasksManager.getSubtasks().containsKey(insert)) {
-            System.out.println("Подзадача:");
-            System.out.println(fileBackedTasksManager.getSubtask(insert));
-        } else {
-            System.out.println("Такой задачи нет!");
-        }
+        System.out.println(fileBackedTasksManager.getTask(1));
 
-        int number = 3;
-        if (fileBackedTasksManager.getTasks().get(number) != null) {
-            fileBackedTasksManager.removeTask(number);
-        } else if (fileBackedTasksManager.getEpics().get(number) != null) {
-            fileBackedTasksManager.removeEpic(number);
-        } else if (fileBackedTasksManager.getSubtasks().get(number) != null) {
-            fileBackedTasksManager.removeSubtask(number);
-        }
+        System.out.println("Подзадача:");
+        System.out.println(fileBackedTasksManager.getSubtask(6));
+
+        fileBackedTasksManager.removeEpic(3);
         System.out.println("Задача удалена!");
 
-        number = 7;
-        if (fileBackedTasksManager.getTasks().get(number) != null) {
-            fileBackedTasksManager.removeTask(number);
-        } else if (fileBackedTasksManager.getEpics().get(number) != null) {
-            fileBackedTasksManager.removeEpic(number);
-        } else if (fileBackedTasksManager.getSubtasks().get(number) != null) {
-            fileBackedTasksManager.removeSubtask(number);
-        }
+        fileBackedTasksManager.removeSubtask(7);
         System.out.println("Задача удалена!");
 
-        number = 1;
         System.out.print("Введите новую задачу: ");
-        if (fileBackedTasksManager.getTasks().get(number) != null) {
-            task = new Task(number, "Помыть посуду", Status.DONE, "убрать после гостей", 0);
-            fileBackedTasksManager.changeTask(task);
-        } else if (fileBackedTasksManager.getEpics().get(number) != null) {
-            epic = new Epic(number, "Помыть посуду", Status.DONE, "убрать после гостей", 0);
-            fileBackedTasksManager.changeEpic(epic);
-        } else if (fileBackedTasksManager.getSubtasks().get(number) != null) {
-            subtask = new Subtask(number, "Помыть посуду", Status.DONE, "убрать после гостей", fileBackedTasksManager.getSubtasks().get(number).getEpicId());
-            fileBackedTasksManager.changeSubtask(subtask);
-        }
+        task = new Task(1, "Помыть посуду", Status.DONE, "убрать после гостей", 0);
+        fileBackedTasksManager.changeTask(task);
         System.out.println("Задача обновлена!");
 
         ArrayList<Task> tasks = fileBackedTasksManager.getAllTasks();
         System.out.println("Задачи:");
         for (Task tasken : tasks) {
-            try {
                 System.out.println(tasken.toString());
-            } catch (NullPointerException e) {
-                break;
-            }
         }
 
         ArrayList<Epic> epics = fileBackedTasksManager.getAllEpics();
         for (Epic epicen : epics) {
-            try {
-                System.out.println(epicen.toString());
-            } catch (NullPointerException e) {
-                break;
-            }
+            System.out.println(epicen.toString());
             System.out.println("    Подзадачи:");
             for (Integer subtaskId : epicen.getSubtaskIds()) {
-                try {
-                    Subtask subtasken = fileBackedTasksManager.getSubtasks().get(subtaskId);
-                    System.out.println("    " + subtasken.toString());
-                } catch (NullPointerException e) {
-                    break;
-                }
+                Subtask subtasken = fileBackedTasksManager.getSubtasks().get(subtaskId);
+                System.out.println("    " + subtasken.toString());
             }
         }
 
@@ -127,28 +72,16 @@ public class Main {
         tasks = fileBackedTasksManager.getAllTasks();
         System.out.println("Задачи:");
         for (Task tasken : tasks) {
-            try {
-                System.out.println(tasken.toString());
-            } catch (NullPointerException e) {
-                break;
-            }
+            System.out.println(tasken.toString());
         }
 
         epics = fileBackedTasksManager.getAllEpics();
         for (Epic epicen : epics) {
-            try {
-                System.out.println(epicen.toString());
-            } catch (NullPointerException e) {
-                break;
-            }
+            System.out.println(epicen.toString());
             System.out.println("    Подзадачи:");
             for (Integer subtaskId : epicen.getSubtaskIds()) {
-                try {
-                    Subtask subtasken = fileBackedTasksManager.getSubtasks().get(subtaskId);
-                    System.out.println("    " + subtasken.toString());
-                } catch (NullPointerException e) {
-                    break;
-                }
+                Subtask subtasken = fileBackedTasksManager.getSubtasks().get(subtaskId);
+                System.out.println("    " + subtasken.toString());
             }
         }
 

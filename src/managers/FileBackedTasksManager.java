@@ -10,11 +10,9 @@
 
     public class FileBackedTasksManager extends InMemoryTaskManager {
         private File file;
-        private String fileName;
 
 
         public FileBackedTasksManager(String fileName) {
-            this.fileName = fileName;
             this.file = new File(fileName);
         }
 
@@ -61,63 +59,19 @@
             return fileBackedTasksManager;
         }
 
-
-        private void save() {
-            try (Writer writer = new FileWriter(file)) {
-                writer.write("id,type,name,status,description,epic\n");
-                HashMap<Integer, String> allTasks = new HashMap<>();
-
-                HashMap<Integer, Task> tasks = super.getTasks();
-                for (Integer id : tasks.keySet()) {
-                    allTasks.put(id, tasks.get(id).toStringFromFile());
-                }
-
-                HashMap<Integer, Epic> epics = super.getEpics();
-                for (Integer id : epics.keySet()) {
-                    allTasks.put(id, epics.get(id).toStringFromFile());
-                }
-
-                HashMap<Integer, Subtask> subtasks = super.getSubtasks();
-                for (Integer id : subtasks.keySet()) {
-                    allTasks.put(id, subtasks.get(id).toStringFromFile());
-                }
-
-                for (String value : allTasks.values()) {
-                    writer.write(String.format("%s\n", value));
-                }
-
-                writer.write(" \n");
-                if(this.historyManager != null){
-                String history = historytoString(this.historyManager);
-                writer.write(history);
-                }
-
-
-            } catch (IOException e) {
-                throw new ManagerSaveException("Ошибка записи файла.");
-            }
-
+        @Override
+        public ArrayList<Task> getAllTasks() {
+            return super.getAllTasks();
         }
 
         @Override
-        public HashMap<Integer, Task> getTasks() {
-            HashMap<Integer, Task> getTasks = super.getTasks();
-            save();
-            return getTasks;
+        public ArrayList<Epic> getAllEpics() {
+            return super.getAllEpics();
         }
 
         @Override
-        public HashMap<Integer, Epic> getEpics() {
-            HashMap<Integer, Epic> getEpics = super.getEpics();
-            save();
-            return getEpics;
-        }
-
-        @Override
-        public HashMap<Integer, Subtask> getSubtasks() {
-            HashMap<Integer, Subtask> getSubtasks = super.getSubtasks();
-            save();
-            return getSubtasks;
+        public ArrayList<Subtask> getAllSubtasks() {
+            return super.getAllSubtasks();
         }
 
         @Override
@@ -265,4 +219,42 @@
             }
             return historyOfTasks;
         }
+
+        private void save() {
+            try (Writer writer = new FileWriter(file)) {
+                writer.write("id,type,name,status,description,epic\n");
+                HashMap<Integer, String> allTasks = new HashMap<>();
+
+                HashMap<Integer, Task> tasks = super.getTasks();
+                for (Integer id : tasks.keySet()) {
+                    allTasks.put(id, tasks.get(id).toStringFromFile());
+                }
+
+                HashMap<Integer, Epic> epics = super.getEpics();
+                for (Integer id : epics.keySet()) {
+                    allTasks.put(id, epics.get(id).toStringFromFile());
+                }
+
+                HashMap<Integer, Subtask> subtasks = super.getSubtasks();
+                for (Integer id : subtasks.keySet()) {
+                    allTasks.put(id, subtasks.get(id).toStringFromFile());
+                }
+
+                for (String value : allTasks.values()) {
+                    writer.write(String.format("%s\n", value));
+                }
+
+                writer.write(" \n");
+                if(this.historyManager != null){
+                    String history = historytoString(this.historyManager);
+                    writer.write(history);
+                }
+
+
+            } catch (IOException e) {
+                throw new ManagerSaveException("Ошибка записи файла.");
+            }
+
+        }
+
     }
