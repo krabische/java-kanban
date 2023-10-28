@@ -10,9 +10,9 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     private int numberOfTask = 0;
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private static HashMap<Integer, Task> tasks = new HashMap<>();
+    private static HashMap<Integer, Epic> epics = new HashMap<>();
+    private static HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     HistoryManager historyManager = new InMemoryHistoryManager();
 
@@ -24,15 +24,15 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager() {
     }
 
-    public HashMap<Integer, Task> getTasks() {
+    public static HashMap<Integer, Task> getTasks() {
         return tasks;
     }
 
-    public HashMap<Integer, Epic> getEpics() {
+    public static HashMap<Integer, Epic> getEpics() {
         return epics;
     }
 
-    public HashMap<Integer, Subtask> getSubtasks() {
+    public static HashMap<Integer, Subtask> getSubtasks() {
         return subtasks;
     }
 
@@ -54,27 +54,30 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.add(subtasks.get(id));
         return subtasks.get(id);
     }
+
     @Override
     public void addTask(Task task) {
-        if(task.getId() != 0){
+        if (task.getId() != 0) {
             tasks.put(task.getId(), task);
         } else {
             task.setId(getNumberOfTask());
             tasks.put(task.getId(), task);
         }
     }
+
     @Override
     public void addEpic(Epic epic) {
-        if (epic.getId() != 0){
+        if (epic.getId() != 0) {
             epics.put(epic.getId(), epic);
         } else {
             epic.setId(getNumberOfTask());
             epics.put(epic.getId(), epic);
         }
     }
+
     @Override
     public void addSubtask(Subtask subtask) {
-        if (subtask.getId() != 0){
+        if (subtask.getId() != 0) {
             subtasks.put(subtask.getId(), subtask);
         } else {
             subtask.setId(getNumberOfTask());
@@ -86,8 +89,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
         updateStatus(subtask.getEpicId());
     }
-
-
 
 
     @Override

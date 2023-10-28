@@ -2,14 +2,12 @@ import managers.*;
 
 import tasks.*;
 
-import java.io.FileNotFoundException;
-
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
 
-        String fileName = "./src/resources/AllTasks.csv";
+        String fileName = "file.csv";
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(fileName);
 
         Task task = new Task("Убраться", "помыть полы");
@@ -52,7 +50,7 @@ public class Main {
         ArrayList<Task> tasks = fileBackedTasksManager.getAllTasks();
         System.out.println("Задачи:");
         for (Task tasken : tasks) {
-                System.out.println(tasken.toString());
+            System.out.println(tasken.toString());
         }
 
         ArrayList<Epic> epics = fileBackedTasksManager.getAllEpics();
@@ -64,26 +62,31 @@ public class Main {
                 System.out.println("    " + subtasken.toString());
             }
         }
+        System.out.println("Просмотренные задачи:");
+        System.out.println(fileBackedTasksManager.getHistory());
 
         System.out.println("\nТЕСТ ЗАГРУЗКА\n");
 
-        fileBackedTasksManager = fileBackedTasksManager.loadTasksFromFile(fileName);
+        FileBackedTasksManager secondManager = FileBackedTasksManager.loadTasksFromFile(fileName);
 
-        tasks = fileBackedTasksManager.getAllTasks();
+        tasks = secondManager.getAllTasks();
         System.out.println("Задачи:");
         for (Task tasken : tasks) {
             System.out.println(tasken.toString());
         }
 
-        epics = fileBackedTasksManager.getAllEpics();
+        epics = secondManager.getAllEpics();
         for (Epic epicen : epics) {
             System.out.println(epicen.toString());
             System.out.println("    Подзадачи:");
             for (Integer subtaskId : epicen.getSubtaskIds()) {
-                Subtask subtasken = fileBackedTasksManager.getSubtasks().get(subtaskId);
+                Subtask subtasken = secondManager.getSubtasks().get(subtaskId);
                 System.out.println("    " + subtasken.toString());
             }
         }
+
+        System.out.println("Просмотренные задачи:");
+        System.out.println(secondManager.getHistory());
 
 
     }
