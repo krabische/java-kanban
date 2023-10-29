@@ -42,12 +42,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     line = reader.readLine();
                     List<Integer> historyNumbers = historyFromString(line);
                     for (Integer taskId : historyNumbers) {
-                        if (getTasks().get(taskId) != null) {
-                            fileBackedTasksManager.historyManager.add(getTasks().get(taskId));
-                        } else if (getEpics().get(taskId) != null) {
-                            fileBackedTasksManager.historyManager.add(getEpics().get(taskId));
-                        } else if (getSubtasks().get(taskId) != null) {
-                            fileBackedTasksManager.historyManager.add(getSubtasks().get(taskId));
+                        if (fileBackedTasksManager.getTasks().get(taskId) != null) {
+                            fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getTasks().get(taskId));
+                        } else if (fileBackedTasksManager.getEpics().get(taskId) != null) {
+                            fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getEpics().get(taskId));
+                        } else if (fileBackedTasksManager.getSubtasks().get(taskId) != null) {
+                            fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getSubtasks().get(taskId));
                         }
                     }
                     break;
@@ -190,7 +190,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             for (Task h : hTasks) {
                 history.append(h != null ? "," + h.getId() : "");
             }
-            history.append("\n");
             return history.toString();
         }
         return "";
@@ -237,11 +236,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 writer.write(history);
             }
 
-
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка записи файла.");
         }
-
     }
 
 }

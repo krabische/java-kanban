@@ -10,9 +10,9 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     private int numberOfTask = 0;
-    private static HashMap<Integer, Task> tasks = new HashMap<>();
-    private static HashMap<Integer, Epic> epics = new HashMap<>();
-    private static HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     HistoryManager historyManager = new InMemoryHistoryManager();
 
@@ -24,15 +24,15 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager() {
     }
 
-    public static HashMap<Integer, Task> getTasks() {
+    public HashMap<Integer, Task> getTasks() {
         return tasks;
     }
 
-    public static HashMap<Integer, Epic> getEpics() {
+    public HashMap<Integer, Epic> getEpics() {
         return epics;
     }
 
-    public static HashMap<Integer, Subtask> getSubtasks() {
+    public HashMap<Integer, Subtask> getSubtasks() {
         return subtasks;
     }
 
@@ -101,6 +101,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void changeTask(Task task) {
         if (tasks.containsKey(task.getId())) {
+            historyManager.update(task.getId(), task);
+      //      historyManager.remove(task.getId());
+       //     historyManager.add(task);
             tasks.put(task.getId(), task);
         }
     }
@@ -238,11 +241,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-
     private int getNumberOfTask() {
         numberOfTask++;
         return numberOfTask;
     }
-
-
 }

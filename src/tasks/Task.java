@@ -73,7 +73,7 @@ public class Task {
     public String toString() {
         return "№" + id + " " + taskName +
                 ", описание: " + description +
-                ", statusOfTask: " + statusOfTask;
+                ", statusOfTask: " + status;
     }
 
     public String toStringFromFile() {
